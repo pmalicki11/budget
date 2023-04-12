@@ -12,4 +12,16 @@ use Illuminate\Database\Eloquent\Model;
 class Expense extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'receiver',
+        'description',
+        'type',
+        'amount',
+        'due_date',
+        'payment_date',
+        'payment_month',
+        'payment_year',
+        'is_paid'
+    ];
 }

@@ -25,7 +25,12 @@ class ExpensesController extends Controller
                    ->orderByDesc('payment_month')
                    ->get();
 
-        $expenses[ExpenseType::INSURANCE->value] = [];
+        $expenses[ExpenseType::INSURANCE->value] =
+            Expense::where('type', ExpenseType::INSURANCE->value)
+                   ->orderByDesc('payment_year')
+                   ->orderByDesc('payment_month')
+                   ->get();
+
         $expenses[ExpenseType::ACCOMMODATION->value] = [];
         $expenses[ExpenseType::ENERGY->value] = [];
         $expenses[ExpenseType::INSTALLMENT->value] = [];
@@ -62,11 +67,34 @@ class ExpensesController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function store(Request $request)
     {
-        dd($request);
+        $request->validate([
+            'receiver' => 'required|max:255',
+            'description' => 'required|max:255',
+            'type' => 'required|max:255',
+            'amount' => 'required',
+            'due_date' => 'required',
+            'payment_date' => '',
+            'payment_month' => 'required|min:1|max:12',
+            'payment_year' => 'required'
+        ]);
+
+        Expense::create([
+            'receiver' => $request->receiver,
+            'description' => $request->description,
+            'type' => $request->type,
+            'amount' => $request->amount,
+            'due_date' => $request->due_date,
+            'payment_date' => $request->payment_date,
+            'payment_month' => $request->payment_month,
+            'payment_year' => $request->payment_year,
+            'is_paid' => $request->is_paid === 'on'
+        ]);
+
+        return redirect(route('expenses.index'));
     }
 
     /**
@@ -84,11 +112,13 @@ class ExpensesController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Application|Factory|View
      */
     public function edit($id)
     {
-        //
+        return view('expenses.edit', [
+            'expense' => Expense::where('id', $id)->first()
+        ]);
     }
 
     /**
@@ -96,11 +126,34 @@ class ExpensesController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Application|\Illuminate\Http\RedirectResponse|\Illuminate\Http\Response|\Illuminate\Routing\Redirector
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'receiver' => 'required|max:255',
+            'description' => 'required|max:255',
+            'type' => 'required|max:255',
+            'amount' => 'required',
+            'due_date' => 'required',
+            'payment_date' => '',
+            'payment_month' => 'required|min:1|max:12',
+            'payment_year' => 'required'
+        ]);
+
+        Expense::where('id', $id)->update([
+            'receiver' => $request->receiver,
+            'description' => $request->description,
+            'type' => $request->type,
+            'amount' => $request->amount,
+            'due_date' => $request->due_date,
+            'payment_date' => $request->payment_date,
+            'payment_month' => $request->payment_month,
+            'payment_year' => $request->payment_year,
+            'is_paid' => $request->is_paid === 'on'
+        ]);
+
+        return redirect(route('expenses.index'));
     }
 
     /**

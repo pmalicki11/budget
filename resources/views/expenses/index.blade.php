@@ -1,14 +1,28 @@
 @extends('layouts.app')
 @section('content')
-<style>
-    .grid-striped .row:nth-of-type(odd) {
-        background-color: rgba(0,0,0,.05);
+    <style>
+        .grid-striped .row:nth-of-type(odd) {
+            background-color: rgba(0, 0, 0, .05);
+        }
+        .grid-striped .expense-row {
+            color: inherit;
+            text-decoration: none;
+        }
+        .grid-striped .expense-row:hover {
+            background-color: #212529;
+            color: white;
+            cursor: pointer;
+        }
+        ul.nav li.nav-item button.active {
+            background-color: #212529;
+            color: white;
+        }
+    </style>
+<script>
+    function edit(id) {
+        window.location.href = '{{ env('APP_URL') }}/expenses/edit/' + id;
     }
-    ul.nav li.nav-item button.active {
-        background-color: #212529;
-        color: white;
-    }
-</style>
+</script>
 
     <div style="display: flex; flex-flow: column; height: 100vh; min-width: 1200px;">
 
@@ -57,17 +71,17 @@
                 >
                     <div class="grid-striped">
                         @foreach ($expenses[$expenseType->value] as $expense)
-                            <div class="row row-cols-lg-9 py-2 mx-2">
+                            <a href="{{ route('expenses.edit', $expense->id) }}" class="row row-cols-lg-9 py-2 mx-2 expense-row">
                                 <div class="col">{{ $expense->receiver }}</div>
                                 <div class="col">{{ $expense->description }}</div>
-                                <div class="col">{{ $expense->type }}</div>
+                                <div class="col">{{ ucfirst($expense->type) }}</div>
                                 <div class="col">{{ $expense->payment_year }}</div>
-                                <div class="col">{{ date('F', mktime(0, 0, 0, $expense->payment_month, 10)) }}</div>
+                                <div class="col">{{ date('F', mktime(0, 0, 0, $expense->payment_month)) }}</div>
                                 <div class="col">{{ $expense->amount }}</div>
                                 <div class="col">{{ $expense->due_date }}</div>
                                 <div class="col">{{ $expense->payment_date }}</div>
                                 <div class="col">{{ $expense->is_paid ? 'yes' : 'no' }}</div>
-                            </div>
+                            </a>
                         @endforeach
                     </div>
                 </div>
