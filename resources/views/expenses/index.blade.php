@@ -48,7 +48,6 @@
                 <div class="row row-cols-lg-9 fw-bold text-white bg-dark py-2 mx-2">
                     <div class="col">Receiver</div>
                     <div class="col">Description</div>
-                    <div class="col">Type</div>
                     <div class="col">Year</div>
                     <div class="col">Month</div>
                     <div class="col">Amount</div>
@@ -74,7 +73,6 @@
                             <a href="{{ route('expenses.edit', $expense->id) }}" class="row row-cols-lg-9 py-2 mx-2 expense-row">
                                 <div class="col">{{ $expense->receiver }}</div>
                                 <div class="col">{{ $expense->description }}</div>
-                                <div class="col">{{ ucfirst($expense->type) }}</div>
                                 <div class="col">{{ $expense->payment_year }}</div>
                                 <div class="col">{{ date('F', mktime(0, 0, 0, $expense->payment_month)) }}</div>
                                 <div class="col">{{ $expense->amount }}</div>
@@ -132,7 +130,7 @@
                             @foreach($expensesSum as $expenseType => $amount)
                                 <div class="progress-bar bg-{{ \App\ExpenseType::color($expenseType) }}"
                                      role="progressbar"
-                                     style="width: {{ $amount * 100 / array_sum($expensesSum) }}%"
+                                     @if(array_sum($expensesSum) > 0) style="width: {{ $amount * 100 / array_sum($expensesSum) }}% @endif"
                                 ></div>
                             @endforeach
                         </div>
