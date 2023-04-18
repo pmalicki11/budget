@@ -2,7 +2,13 @@
 @section('content')
     <style>
         .grid-striped .row:nth-of-type(odd) {
-            background-color: rgba(0, 0, 0, .05);
+            background-color: #e6e6e6;
+        }
+        .grid-striped .unpaid:nth-of-type(odd) {
+            background-color: #ffcccc; !important
+        }
+        .grid-striped .unpaid:nth-of-type(even) {
+            background-color: #ffe6e6; !important;
         }
         .grid-striped .expense-row {
             color: inherit;
@@ -18,11 +24,6 @@
             color: white;
         }
     </style>
-<script>
-    function edit(id) {
-        window.location.href = '{{ env('APP_URL') }}/expenses/edit/' + id;
-    }
-</script>
 
     <div style="display: flex; flex-flow: column; height: 100vh; min-width: 1200px;">
 
@@ -70,7 +71,8 @@
                 >
                     <div class="grid-striped">
                         @foreach ($expenses[$expenseType->value] as $expense)
-                            <a href="{{ route('expenses.edit', $expense->id) }}" class="row row-cols-lg-9 py-2 mx-2 expense-row">
+                            <a href="{{ route('expenses.edit', $expense->id) }}"
+                               class="row row-cols-lg-9 py-2 mx-2 expense-row {{!$expense->is_paid ? 'unpaid' : ''}}">
                                 <div class="col">{{ $expense->receiver }}</div>
                                 <div class="col">{{ $expense->description }}</div>
                                 <div class="col">{{ $expense->payment_year }}</div>

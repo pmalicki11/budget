@@ -7,7 +7,7 @@ enum ExpenseType: string
     case COMMUNICATION = 'communication';
     case INSURANCE = 'insurance';
     case ACCOMMODATION = 'accommodation';
-    case ENERGY = 'energy';
+    case BILLS = 'bills';
     case INSTALLMENT = 'installment';
     case ENTERTAINMENT = 'entertainment';
 
@@ -17,7 +17,7 @@ enum ExpenseType: string
             self::COMMUNICATION->value => 'success',
             self::INSURANCE->value => 'info',
             self::ACCOMMODATION->value => 'warning',
-            self::ENERGY->value => 'danger',
+            self::BILLS->value => 'danger',
             self::INSTALLMENT->value => 'secondary',
             self::ENTERTAINMENT->value => 'primary',
             default => 'light'

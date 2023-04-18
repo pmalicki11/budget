@@ -31,9 +31,23 @@ class ExpensesController extends Controller
                    ->orderByDesc('payment_month')
                    ->get();
 
-        $expenses[ExpenseType::ACCOMMODATION->value] = [];
-        $expenses[ExpenseType::ENERGY->value] = [];
-        $expenses[ExpenseType::INSTALLMENT->value] = [];
+        $expenses[ExpenseType::ACCOMMODATION->value] =
+            Expense::where('type', ExpenseType::ACCOMMODATION->value)
+                   ->orderByDesc('payment_year')
+                   ->orderByDesc('payment_month')
+                   ->get();
+
+        $expenses[ExpenseType::BILLS->value] =
+            Expense::where('type', ExpenseType::BILLS->value)
+                   ->orderByDesc('payment_year')
+                   ->orderByDesc('payment_month')
+                   ->get();
+
+        $expenses[ExpenseType::INSTALLMENT->value] =
+            Expense::where('type', ExpenseType::INSTALLMENT->value)
+                   ->orderByDesc('payment_year')
+                   ->orderByDesc('payment_month')
+                   ->get();
 
         $expenses[ExpenseType::ENTERTAINMENT->value] =
             Expense::where('type', ExpenseType::ENTERTAINMENT->value)
