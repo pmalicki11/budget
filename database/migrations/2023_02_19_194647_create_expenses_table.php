@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('expenses', function (Blueprint $table) {
             $table->id();
-            $table->string('receiver');
+            $table->unsignedBigInteger('receiver_id');
             $table->string('description')->nullable();
             $table->string('type');
             $table->integer('payment_month');
@@ -24,6 +24,7 @@ return new class extends Migration
             $table->date('due_date')->nullable();
             $table->date('payment_date')->nullable();
             $table->boolean('is_paid')->default(false);
+            $table->foreign('receiver_id')->references('id')->on('receivers')->onDelete('cascade');
             $table->timestamps();
         });
     }

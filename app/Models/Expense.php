@@ -14,7 +14,7 @@ class Expense extends Model
     use HasFactory;
 
     protected $fillable = [
-        'receiver',
+        'receiver_id',
         'description',
         'type',
         'amount',
@@ -24,4 +24,9 @@ class Expense extends Model
         'payment_year',
         'is_paid'
     ];
+
+    public function receiver()
+    {
+        return $this->belongsTo(Receiver::class);
+    }
 }

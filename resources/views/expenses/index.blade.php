@@ -73,7 +73,7 @@
                         @foreach ($expenses[$expenseType->value] as $expense)
                             <a href="{{ route('expenses.edit', $expense->id) }}"
                                class="row row-cols-lg-9 py-2 mx-2 expense-row {{!$expense->is_paid ? 'unpaid' : ''}}">
-                                <div class="col">{{ $expense->receiver }}</div>
+                                <div class="col">{{ $expense->receiver->name }}</div>
                                 <div class="col">{{ $expense->description }}</div>
                                 <div class="col">{{ $expense->payment_year }}</div>
                                 <div class="col">{{ date('F', mktime(0, 0, 0, $expense->payment_month)) }}</div>
