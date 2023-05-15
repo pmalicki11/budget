@@ -28,7 +28,14 @@
                 </div>
                 <div class="col-md-8 mb-3">
                     <label for="receiver" class="form-label">Receiver</label>
-                    <input type="text" class="form-control" id="receiver" name="receiver">
+                    <select type="text" class="form-select" id="receiver" name="receiver">
+                        <option selected disabled>Select...</option>
+                        @foreach($receivers as $receiver)
+                            <option value="{{ $receiver->id }}">
+                                {{ ucfirst($receiver->name) }}
+                            </option>
+                        @endforeach
+                    </select>
                 </div>
                 <div class="col-4 mb-3">
                     <label for="amount" class="form-label">Amount</label>

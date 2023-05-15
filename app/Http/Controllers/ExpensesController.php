@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\ExpenseType;
 use App\Models\Expense;
+use App\Models\Receiver;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -74,7 +75,10 @@ class ExpensesController extends Controller
      */
     public function create()
     {
-        return view('expenses.create');
+
+        return view('expenses.create', [
+            'receivers' => Receiver::all()->sortBy('name')
+        ]);
     }
 
     /**
@@ -86,7 +90,7 @@ class ExpensesController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'receiver' => 'required|max:255',
+            'receiver' => 'required|integer|min:1',
             'description' => 'required|max:255',
             'type' => 'required|max:255',
             'amount' => 'required',
@@ -97,7 +101,7 @@ class ExpensesController extends Controller
         ]);
 
         Expense::create([
-            'receiver' => $request->receiver,
+            'receiver_id' => $request->receiver,
             'description' => $request->description,
             'type' => $request->type,
             'amount' => $request->amount,
@@ -131,7 +135,8 @@ class ExpensesController extends Controller
     public function edit($id)
     {
         return view('expenses.edit', [
-            'expense' => Expense::where('id', $id)->first()
+            'expense' => Expense::where('id', $id)->first(),
+            'receivers' => Receiver::all()->sortBy('name')
         ]);
     }
 
@@ -145,7 +150,7 @@ class ExpensesController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'receiver' => 'required|max:255',
+            'receiver' => 'required|integer|min:1',
             'description' => 'required|max:255',
             'type' => 'required|max:255',
             'amount' => 'required',
@@ -156,7 +161,7 @@ class ExpensesController extends Controller
         ]);
 
         Expense::where('id', $id)->update([
-            'receiver' => $request->receiver,
+            'receiver_id' => $request->receiver,
             'description' => $request->description,
             'type' => $request->type,
             'amount' => $request->amount,

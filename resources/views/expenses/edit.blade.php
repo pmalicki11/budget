@@ -31,7 +31,16 @@
                 </div>
                 <div class="col-md-8 mb-3">
                     <label for="receiver" class="form-label">Receiver</label>
-                    <input type="text" class="form-control" id="receiver" name="receiver" value="{{ $expense->receiver }}">
+                    <select type="text" class="form-select" id="receiver" name="receiver">
+                        @foreach($receivers as $receiver)
+                            <option
+                                value="{{ $receiver->id }}"
+                                @if($expense->receiver->id === $receiver->id) selected @endif
+                            >
+                                {{ ucfirst($receiver->name) }}
+                            </option>
+                        @endforeach
+                    </select>
                 </div>
                 <div class="col-4 mb-3">
                     <label for="amount" class="form-label">Amount</label>
