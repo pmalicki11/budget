@@ -46,6 +46,20 @@
                 </ul>
             @endif
         </li>
+        <li>
+            <a href="{{ route('receivers.index') }}" class="nav-link text-white
+            {{ explode('.', Route::currentRouteName())[0] === 'receivers' ? 'active' : '' }}
+            "><i class="bi bi-people me-2"></i>Recievers</a>
+            @if(explode('.', Route::currentRouteName())[0] === 'receivers')
+                <ul class="list-unstyled ps-4">
+                    <li class="my-2">
+                        <a href="{{ route('receivers.create') }}"
+                           class="text-white text-decoration-none
+                        "><i class="bi bi-plus-lg me-2"></i>Add</a>
+                    </li>
+                </ul>
+            @endif
+        </li>
     </ul>
     <hr>
     <div class="dropdown">
