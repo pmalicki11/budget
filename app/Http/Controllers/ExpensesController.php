@@ -77,7 +77,7 @@ class ExpensesController extends Controller
     {
 
         return view('expenses.create', [
-            'receivers' => Receiver::all()->sortBy('name')
+            'receivers' => Receiver::where('is_active', true)->get()->sortBy('name')
         ]);
     }
 
@@ -134,10 +134,13 @@ class ExpensesController extends Controller
      */
     public function edit($id)
     {
-        return view('expenses.edit', [
-            'expense' => Expense::where('id', $id)->first(),
-            'receivers' => Receiver::all()->sortBy('name')
-        ]);
+        $expense = Expense::where('id', $id)->first();
+        $receivers = Receiver::where('is_active', true)->get()->sortBy('name');
+        if (!$receivers->has($expense->receiver->id)) {
+            $receivers->prepend($expense->receiver);
+        }
+
+        return view('expenses.edit', compact('expense', 'receivers'));
     }
 
     /**
