@@ -29,6 +29,7 @@ Route::prefix('/expenses')->group(function () {
     Route::get('/', [ExpensesController::class, 'index'])->name('expenses.index');
     Route::get('/{id}', [ExpensesController::class, 'show'])->name('expenses.show')->where('id', '[0-9]+');
     Route::get('/create', [ExpensesController::class, 'create'])->name('expenses.create');
+    Route::get('/copy', [ExpensesController::class, 'copy'])->name('expenses.copy');
     Route::post('/', [ExpensesController::class, 'store'])->name('expenses.store');
     Route::get('/edit/{id}', [ExpensesController::class, 'edit'])->name('expenses.edit')->where('id', '[0-9]+');
     Route::patch('/{id}', [ExpensesController::class, 'update'])->name('expenses.update')->where('id', '[0-9]+');

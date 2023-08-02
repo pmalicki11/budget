@@ -90,10 +90,10 @@
                 </div>
                 <div class="col-12">
                     <button type="submit" class="btn btn-primary btn-lg">Submit</button>
+                    <a href="{{ route('expenses.copy') }}" class="btn btn-secondary btn-lg" role="button">Copy</a>
                 </div>
             </form>
         </div>
-        <div class="col-2"></div>
     </div>
 
 @endsection

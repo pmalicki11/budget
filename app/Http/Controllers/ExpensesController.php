@@ -9,6 +9,7 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class ExpensesController extends Controller
 {
@@ -75,10 +76,25 @@ class ExpensesController extends Controller
      */
     public function create()
     {
-
         return view('expenses.create', [
             'receivers' => Receiver::where('is_active', true)->get()->sortBy('name')
         ]);
+    }
+
+    public function copy()
+    {
+        $expense = Session::pull('last_edited_expense');
+        if (!empty($expense)) {
+            return redirect()->route('expenses.create')->withInput([
+                'type' => $expense->type,
+                'receiver' => $expense->receiver->id,
+                'amount' => 0,
+                'description' => $expense->description,
+                'payment_year' => $expense->payment_year,
+                'payment_month' => $expense->payment_month
+            ]);
+        }
+        return redirect()->route('expenses.index');
     }
 
     /**
@@ -139,6 +155,7 @@ class ExpensesController extends Controller
         if (!$receivers->has($expense->receiver->id)) {
             $receivers->prepend($expense->receiver);
         }
+        Session::put('last_edited_expense', $expense);
 
         return view('expenses.edit', compact('expense', 'receivers'));
     }
