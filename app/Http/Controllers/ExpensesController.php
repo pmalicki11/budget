@@ -175,7 +175,7 @@ class ExpensesController extends Controller
             'type' => 'required|max:255',
             'amount' => 'required',
             'due_date' => 'required',
-            'payment_date' => '',
+            'payment_date' => 'required_with:is_paid',
             'payment_month' => 'required|min:1|max:12',
             'payment_year' => 'required'
         ]);
