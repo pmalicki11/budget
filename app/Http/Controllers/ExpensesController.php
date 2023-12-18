@@ -10,6 +10,7 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
 
 class ExpensesController extends Controller
 {
@@ -109,7 +110,11 @@ class ExpensesController extends Controller
             'receiver' => 'required|integer|min:1',
             'description' => 'required|max:255',
             'type' => 'required|max:255',
-            'amount' => 'required',
+            'amount' => ['required', 'numeric', function ($attribute, $value, $fail) use ($request) {
+                if ($request->is_paid === 'on' && $value <= 0) {
+                    $fail('Amount should be positive if expense is marked as paid');
+                }
+            }],
             'due_date' => 'required',
             'payment_date' => '',
             'payment_month' => 'required|min:1|max:12',
@@ -173,7 +178,11 @@ class ExpensesController extends Controller
             'receiver' => 'required|integer|min:1',
             'description' => 'required|max:255',
             'type' => 'required|max:255',
-            'amount' => 'required',
+            'amount' => ['required', 'numeric', function ($attribute, $value, $fail) use ($request) {
+                if ($request->is_paid === 'on' && $value <= 0) {
+                    $fail('Amount should be positive if expense is marked as paid');
+                }
+            }],
             'due_date' => 'required',
             'payment_date' => 'required_with:is_paid',
             'payment_month' => 'required|min:1|max:12',
