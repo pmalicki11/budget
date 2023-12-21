@@ -161,6 +161,8 @@ class ExpensesController extends Controller
             $receivers->prepend($expense->receiver);
         }
         Session::put('last_edited_expense', $expense);
+        $urlArray = explode('/', $_SERVER['HTTP_REFERER'] ?? '');
+        Session::put('back_to', (count($urlArray) >= 4 && $urlArray[3] === 'expenses') ? 'expenses' : 'home');
 
         return view('expenses.edit', compact('expense', 'receivers'));
     }
@@ -201,7 +203,10 @@ class ExpensesController extends Controller
             'is_paid' => $request->is_paid === 'on'
         ]);
 
-        return redirect(route('expenses.index'));
+        $backTo = Session::pull('back_to', 'home');
+        $route = ((in_array($backTo, ['home', 'expenses'], true)) ? $backTo : 'home') . '.index';
+
+        return redirect(route($route));
     }
 
     /**
