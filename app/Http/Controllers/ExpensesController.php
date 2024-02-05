@@ -106,6 +106,8 @@ class ExpensesController extends Controller
      */
     public function store(Request $request)
     {
+        $request->merge(['amount' => str_replace(',', '.', $request->amount)]);
+
         $request->validate([
             'receiver' => 'required|integer|min:1',
             'description' => 'required|max:255',
@@ -125,7 +127,7 @@ class ExpensesController extends Controller
             'receiver_id' => $request->receiver,
             'description' => $request->description,
             'type' => $request->type,
-            'amount' => str_replace(',', '.', $request->amount),
+            'amount' => $request->amount,
             'due_date' => $request->due_date,
             'payment_date' => $request->payment_date,
             'payment_month' => $request->payment_month,
@@ -176,6 +178,8 @@ class ExpensesController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $request->merge(['amount' => str_replace(',', '.', $request->amount)]);
+        
         $request->validate([
             'receiver' => 'required|integer|min:1',
             'description' => 'required|max:255',
@@ -195,7 +199,7 @@ class ExpensesController extends Controller
             'receiver_id' => $request->receiver,
             'description' => $request->description,
             'type' => $request->type,
-            'amount' => str_replace(',', '.', $request->amount),
+            'amount' => $request->amount,
             'due_date' => $request->due_date,
             'payment_date' => $request->payment_date,
             'payment_month' => $request->payment_month,
